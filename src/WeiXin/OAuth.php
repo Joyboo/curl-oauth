@@ -35,15 +35,13 @@ class OAuth extends BaseOAuth
 
     protected function __getAccessToken($state = null, $code = null)
     {
-        $client = (new HttpClient(self::API_DOMAIN . '/sns/oauth2/access_token'))
-            ->setQuery([
+        $body = $this->curl(self::API_DOMAIN . '/sns/oauth2/access_token?' . http_build_query([
                 'appid' => $this->config->getAppId(),
                 'secret' => $this->config->getSecret(),
                 'code' => $code,
                 'grant_type' => 'authorization_code',
-            ])->get();
+            ]));
 
-        $body = $client->getBody();
         if (!$body) throw new OAuthException('获取AccessToken失败！');
 
         $result = \json_decode($body, true);
@@ -71,15 +69,12 @@ class OAuth extends BaseOAuth
 
     public function getUserInfo(string $accessToken)
     {
-        $client = (new HttpClient(self::API_DOMAIN . '/sns/userinfo'))
-            ->setQuery([
+        $body = $this->curl(self::API_DOMAIN . '/sns/userinfo?' . http_build_query([
                 'access_token' => $accessToken,
                 'openid' => $this->openId,
                 'lang' => $this->config->getLang(),
-            ])
-            ->get();
+            ]));
 
-        $body = $client->getBody();
         if (!$body) throw new OAuthException('获取用户信息失败！');
 
         $result = \json_decode($body, true);
@@ -98,11 +93,9 @@ class OAuth extends BaseOAuth
             'grant_type' => 'refresh_token',
             'refresh_token' => $refreshToken
         ];
-        $client = (new HttpClient(self::API_DOMAIN . '/sns/oauth2/refresh_token'))
-            ->setQuery($params)
-            ->get();
 
-        $body = $client->getBody();
+        $body = $this->curl(self::API_DOMAIN . '/sns/oauth2/refresh_token?' . http_build_query($params));
+
         if (!$body) return false;
 
         $result = \json_decode($body, true);
@@ -117,11 +110,9 @@ class OAuth extends BaseOAuth
             'access_token' => $accessToken,
             'openid' => $this->openId
         ];
-        $client = (new HttpClient(self::API_DOMAIN . '/sns/auth'))
-            ->setQuery($params)
-            ->get();
 
-        $body = $client->getBody();
+        $body = $this->curl(self::API_DOMAIN . '/sns/auth?' . http_build_query($params));
+
         if (!$body) return false;
 
         $result = \json_decode($body, true);

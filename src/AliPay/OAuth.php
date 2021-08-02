@@ -44,11 +44,8 @@ class OAuth extends BaseOAuth
             'code' => $code
         ];
         $params['sign'] = $this->sign($params);
-        $client = (new HttpClient(self::API_DOMAIN . '/gateway.do'))
-            ->setQuery($params)
-            ->get();
-
-        $body = $client->getBody();
+        $url = self::API_DOMAIN . '/gateway.do?' . http_build_query($params);
+        $body = $this->curl($url);
 
         if (!$body) throw new OAuthException('获取AccessToken失败！');
 
@@ -82,11 +79,9 @@ class OAuth extends BaseOAuth
             'auth_token' => $accessToken,
         ];
         $params['sign'] = $this->sign($params);
-        $client = (new HttpClient(self::API_DOMAIN . '/gateway.do'))
-            ->setQuery($params)
-            ->get();
+        $url = self::API_DOMAIN . '/gateway.do?' . http_build_query($params);
+        $body = $this->curl($url);
 
-        $body = $client->getBody();
         if (!$body) throw new OAuthException('获取用户信息失败！');
 
         $result = \json_decode($body, true);
@@ -158,11 +153,8 @@ class OAuth extends BaseOAuth
         ];
 
         $params['sign'] = $this->sign($params);
-        $client = (new HttpClient(self::API_DOMAIN . '/gateway.do'))
-            ->setQuery($params)
-            ->get();
-
-        $body = $client->getBody();
+        $url = self::API_DOMAIN . '/gateway.do?' . http_build_query($params);
+        $body = $this->curl($url);
 
         if (!$body) return false;
         $result = \json_decode($body, true);

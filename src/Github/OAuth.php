@@ -33,15 +33,13 @@ class OAuth extends BaseOAuth
 
     protected function __getAccessToken($state = null, $code = null)
     {
-        $client = (new HttpClient(self::AUTH_DOMAIN . '/login/oauth/access_token'))->post([
+        $body = $this->curl(self::AUTH_DOMAIN . '/login/oauth/access_token', [
             'client_id' => $this->config->getClientId(),
             'client_secret' => $this->config->getClientSecret(),
             'code' => $code,
             'redirect_uri' => $this->config->getRedirectUri(),
             'state' => $state,
         ]);
-
-        $body = $client->getBody();
 
         if (!$body) throw new OAuthException('获取AccessToken失败！');
 
@@ -59,11 +57,7 @@ class OAuth extends BaseOAuth
 
     public function getUserInfo(string $accessToken)
     {
-        $client = (new HttpClient(self::API_DOMAIN . '/user'))
-            ->setHeader('Authorization', ' token ' . $accessToken)
-            ->get();
-
-        $body = $client->getBody();
+        $body = $this->curl(self::API_DOMAIN . '/user', false, ["Authorization: token $accessToken"]);
 
         if (!$body) throw new OAuthException('获取用户信息失败！');
 

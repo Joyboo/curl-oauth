@@ -42,11 +42,8 @@ class OAuth extends BaseOAuth
             'state' => $state,
             'redirect_uri' => $this->config->getRedirectUri()
         ];
-        $client = (new HttpClient(self::API_DOMAIN . '/oauth2.0/token'))
-            ->setQuery($params)
-            ->get();
 
-        $body = $client->getBody();
+        $body = $this->curl(self::API_DOMAIN . '/oauth2.0/token?' . http_build_query($params));
 
         if (!$body) throw new OAuthException('获取AccessToken失败！');
 
@@ -84,11 +81,8 @@ class OAuth extends BaseOAuth
             'refresh_token' => $refreshToken
         ];
 
-        $client = (new HttpClient(self::API_DOMAIN . '/oauth2.0/token'))
-            ->setQuery($params)
-            ->get();
+        $body = $this->curl(self::API_DOMAIN . '/oauth2.0/token?' . http_build_query($params));
 
-        $body = $client->getBody();
         if (!$body) return false;
 
         $responseData = $this->jsonp_decode($body, true);
@@ -114,11 +108,7 @@ class OAuth extends BaseOAuth
             'openid' => $this->openId,
         ];
 
-        $client = (new HttpClient(self::API_DOMAIN . '/user/get_user_info'))
-            ->setQuery($params)
-            ->get();
-
-        $body = $client->getBody();
+        $body = $this->curl(self::API_DOMAIN . '/user/get_user_info?' . http_build_query($params));
 
         if (!$body) throw new OAuthException('获取用户信息失败！');
 
@@ -140,12 +130,7 @@ class OAuth extends BaseOAuth
             $params['unionid'] = $this->config->getOpenIdMode();
         }
 
-        $client = (new HttpClient(self::API_DOMAIN . '/oauth2.0/me'))
-            ->setQuery($params)
-            ->get();
-
-
-        $body = $client->getBody();
+        $body = $this->curl(self::API_DOMAIN . '/oauth2.0/me?' . http_build_query($params));
 
         if (!$body) throw new OAuthException('获取OpenId失败！');
 

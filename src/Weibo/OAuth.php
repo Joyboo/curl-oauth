@@ -40,17 +40,13 @@ class OAuth extends BaseOAuth
 
     protected function __getAccessToken($state = null, $code = null)
     {
-        $client = (new HttpClient(self::API_DOMAIN . '/oauth2/access_token'))
-            ->post([
-                'client_id' => $this->config->getClientId(),
-                'redirect_uri' => $this->config->getRedirectUri(),
-                'client_secret' => $this->config->getClientSecret(),
-                'grant_type' => 'authorization_code',
-                'code' => $code,
-            ]);
-
-
-        $body = $client->getBody();
+        $body = $this->curl(self::API_DOMAIN . '/oauth2/access_token', [
+            'client_id' => $this->config->getClientId(),
+            'redirect_uri' => $this->config->getRedirectUri(),
+            'client_secret' => $this->config->getClientSecret(),
+            'grant_type' => 'authorization_code',
+            'code' => $code,
+        ]);
 
         if (!$body) throw new OAuthException('获取AccessToken失败！');
 
@@ -67,14 +63,10 @@ class OAuth extends BaseOAuth
 
     public function getUserInfo(string $accessToken)
     {
-        $client = (new HttpClient(self::API_DOMAIN . '/2/users/show.json'))
-            ->setQuery([
+        $body = $this->curl(self::API_DOMAIN . '/2/users/show.json?' . http_build_query([
                 'access_token' => $accessToken,
                 'uid' => $this->uid
-            ])
-            ->get();
-
-        $body = $client->getBody();
+            ]));
 
         if (!$body) throw new OAuthException('获取用户信息失败！');
 
@@ -98,10 +90,7 @@ class OAuth extends BaseOAuth
             'access_token' => $accessToken
         ];
 
-        $client = (new HttpClient(self::API_DOMAIN . '/oauth2/get_token_info'))
-            ->post($params);
-
-        $body = $client->getBody();
+        $body = $this->curl(self::API_DOMAIN . '/oauth2/get_token_info', $params);
         if (!$body) return false;
 
         if (isset($this->result['error_code'])) {

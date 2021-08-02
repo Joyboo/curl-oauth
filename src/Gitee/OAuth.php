@@ -28,10 +28,8 @@ class OAuth extends BaseOAuth
 
     public function getUserInfo(string $accessToken)
     {
-        $client = (new HttpClient(self::API_DOMAIN . '/api/v5/user'))
-            ->setQuery(['access_token' => $accessToken])
-            ->get(['User-Agent' => '']);
-        $body = $client->getBody();
+        $url = self::API_DOMAIN . '/api/v5/user?access_token=' . $accessToken;
+        $body = $this->curl($url);
 
         if (!$body) throw new OAuthException('获取用户信息失败！');
         $result = \json_decode($body, true);
@@ -45,15 +43,14 @@ class OAuth extends BaseOAuth
 
     protected function __getAccessToken($state = null, $code = null)
     {
-        $client = (new HttpClient(self::API_DOMAIN . '/oauth/token'))
-            ->post([
-                'grant_type' => 'authorization_code',
-                'code' => $code,
-                'client_id' => $this->config->getClientId(),
-                'redirect_uri' => $this->config->getRedirectUri(),
-                'client_secret' => $this->config->getClientSecret(),
-            ], ['User-Agent' => '']);
-        $body = $client->getBody();
+        $url = self::API_DOMAIN . '/oauth/token';
+        $body = $this->curl($url, [
+            'grant_type' => 'authorization_code',
+            'code' => $code,
+            'client_id' => $this->config->getClientId(),
+            'redirect_uri' => $this->config->getRedirectUri(),
+            'client_secret' => $this->config->getClientSecret(),
+        ]);
 
         if (!$body) throw new OAuthException('获取AccessToken失败！');
 
