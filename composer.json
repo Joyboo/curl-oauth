@@ -1,5 +1,5 @@
 {
-  "name": "joyboo/o-auth",
+  "name": "joyboo/joyoauth",
   "type": "library",
   "description": "curl oauth component",
   "keywords" : ["framework", "async"],
