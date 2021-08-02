@@ -2,12 +2,12 @@
 
 ## 介绍
 
-基于`easyswoole/http-client`对第三方登录授权的SDK。
+基于`curl`对第三方登录授权的SDK。
 
 ## 安装
 
 ```
-composer require easyswoole/o-auth
+composer require Joyboo/o-auth
 ```
 
 ## 代码

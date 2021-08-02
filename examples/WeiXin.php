@@ -4,16 +4,16 @@
  */
 
 
-class WeiXin extends \EasySwoole\Http\AbstractInterface\Controller
+class WeiXin
 {
     public function index()
     {
-        $config = new \EasySwoole\OAuth\WeiXin\Config();
+        $config = new \OAuth\WeiXin\Config();
         $config->setAppId('appid');
         $config->setState('easyswoole');
         $config->setRedirectUri('redirect_uri');
 
-        $oauth = new \EasySwoole\OAuth\WeiXin\OAuth($config);
+        $oauth = new \OAuth\WeiXin\OAuth($config);
         $url = $oauth->getAuthUrl();
 
         return $this->response()->redirect($url);
@@ -23,11 +23,11 @@ class WeiXin extends \EasySwoole\Http\AbstractInterface\Controller
     {
         $params = $this->request()->getQueryParams();
 
-        $config = new \EasySwoole\OAuth\WeiXin\Config();
+        $config = new \OAuth\WeiXin\Config();
         $config->setAppId('appid');
         $config->setSecret('secret');
 
-        $oauth = new \EasySwoole\OAuth\WeiXin\OAuth($config);
+        $oauth = new \OAuth\WeiXin\OAuth($config);
         $accessToken = $oauth->getAccessToken('easyswoole', $params['state'], $params['code']);
         $refreshToken = $oauth->getAccessTokenResult()['refresh_token'];
 

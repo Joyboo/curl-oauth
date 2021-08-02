@@ -4,10 +4,10 @@
  */
 
 
-namespace EasySwoole\OAuth\Gitee;
+namespace OAuth\Gitee;
 
 
-use EasySwoole\OAuth\BaseConfig;
+use OAuth\BaseConfig;
 
 class Config extends BaseConfig
 {

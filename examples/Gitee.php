@@ -4,15 +4,15 @@
  */
 
 
-class Gitee extends \EasySwoole\Http\AbstractInterface\Controller
+class Gitee
 {
     public function index()
     {
-        $config = new \EasySwoole\OAuth\Gitee\Config();
+        $config = new \OAuth\Gitee\Config();
         $config->setState('easyswoole');
         $config->setClientId('clientid');
         $config->setRedirectUri('redirect_uri');
-        $oauth = new \EasySwoole\OAuth\Gitee\OAuth($config);
+        $oauth = new \OAuth\Gitee\OAuth($config);
         $this->response()->redirect($oauth->getAuthUrl());
     }
 
@@ -20,12 +20,12 @@ class Gitee extends \EasySwoole\Http\AbstractInterface\Controller
     {
         $params = $this->request()->getQueryParams();
 
-        $config = new \EasySwoole\OAuth\Gitee\Config();
+        $config = new \OAuth\Gitee\Config();
         $config->setClientId('client_id');
         $config->setClientSecret('secret');
         $config->setRedirectUri('redirect_uri');
 
-        $oauth = new \EasySwoole\OAuth\Gitee\OAuth($config);
+        $oauth = new \OAuth\Gitee\OAuth($config);
         $accessToken = $oauth->getAccessToken('easyswoole', $params['state'], $params['code']);
         $userInfo = $oauth->getUserInfo($accessToken);
         var_dump($userInfo);

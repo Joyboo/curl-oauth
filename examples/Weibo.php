@@ -4,16 +4,16 @@
  */
 
 
-class Weibo extends \EasySwoole\Http\AbstractInterface\Controller
+class Weibo
 {
     public function index()
     {
-        $config = new \EasySwoole\OAuth\Weibo\Config();
+        $config = new \OAuth\Weibo\Config();
         $config->setClientId('clientid');
         $config->setState('easyswoole');
         $config->setRedirectUri('redirect_uri');
 
-        $oauth = new \EasySwoole\OAuth\Weibo\OAuth($config);
+        $oauth = new \OAuth\Weibo\OAuth($config);
         $url = $oauth->getAuthUrl();
 
         return $this->response()->redirect($url);
@@ -23,12 +23,12 @@ class Weibo extends \EasySwoole\Http\AbstractInterface\Controller
     {
         $params = $this->request()->getQueryParams();
 
-        $config = new \EasySwoole\OAuth\Weibo\Config();
+        $config = new \OAuth\Weibo\Config();
         $config->setClientId('clientid');
         $config->setClientSecret('secret');
         $config->setRedirectUri('redirect_uri');
 
-        $oauth = new \EasySwoole\OAuth\Weibo\OAuth($config);
+        $oauth = new \OAuth\Weibo\OAuth($config);
         $accessToken = $oauth->getAccessToken('easyswoole', $params['state'], $params['code']);
 
         $userInfo = $oauth->getUserInfo($accessToken);

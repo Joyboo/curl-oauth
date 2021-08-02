@@ -4,13 +4,10 @@
  */
 
 
-namespace EasySwoole\OAuth\AliPay;
+namespace OAuth\AliPay;
 
-
-use EasySwoole\HttpClient\HttpClient;
-use EasySwoole\OAuth\BaseOAuth;
-use EasySwoole\OAuth\OAuthException;
-use Swoole\Coroutine\System;
+use OAuth\BaseOAuth;
+use OAuth\OAuthException;
 
 class OAuth extends BaseOAuth
 {
@@ -47,11 +44,8 @@ class OAuth extends BaseOAuth
             'code' => $code
         ];
         $params['sign'] = $this->sign($params);
-        $client = (new HttpClient(self::API_DOMAIN . '/gateway.do'))
-            ->setQuery($params)
-            ->get();
-
-        $body = $client->getBody();
+        $url = self::API_DOMAIN . '/gateway.do?' . http_build_query($params);
+        $body = $this->curl($url);
 
         if (!$body) throw new OAuthException('获取AccessToken失败！');
 
@@ -85,11 +79,9 @@ class OAuth extends BaseOAuth
             'auth_token' => $accessToken,
         ];
         $params['sign'] = $this->sign($params);
-        $client = (new HttpClient(self::API_DOMAIN . '/gateway.do'))
-            ->setQuery($params)
-            ->get();
+        $url = self::API_DOMAIN . '/gateway.do?' . http_build_query($params);
+        $body = $this->curl($url);
 
-        $body = $client->getBody();
         if (!$body) throw new OAuthException('获取用户信息失败！');
 
         $result = \json_decode($body, true);
@@ -120,7 +112,8 @@ class OAuth extends BaseOAuth
         }
 
         if ($this->config->getAppPrivateKeyFile()) {
-            $privateKey = System::readFile($this->config->getAppPrivateKeyFile());
+//            $privateKey = System::readFile($this->config->getAppPrivateKeyFile());
+            $privateKey = file_get_contents($this->config->getAppPrivateKeyFile());
         } else if ($this->config->getAppPrivateKey()) {
             $privateKey = $this->config->getAppPrivateKey();
         } else {
@@ -160,11 +153,8 @@ class OAuth extends BaseOAuth
         ];
 
         $params['sign'] = $this->sign($params);
-        $client = (new HttpClient(self::API_DOMAIN . '/gateway.do'))
-            ->setQuery($params)
-            ->get();
-
-        $body = $client->getBody();
+        $url = self::API_DOMAIN . '/gateway.do?' . http_build_query($params);
+        $body = $this->curl($url);
 
         if (!$body) return false;
         $result = \json_decode($body, true);
