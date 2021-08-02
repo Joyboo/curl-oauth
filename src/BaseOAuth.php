@@ -3,7 +3,7 @@
  * @author gaobinzhan <gaobinzhan@gmail.com>
  */
 
-namespace EasySwoole\OAuth;
+namespace OAuth;
 
 abstract class BaseOAuth
 {
@@ -87,4 +87,73 @@ abstract class BaseOAuth
     public abstract function refreshToken(string $refreshToken = null);
 
     public abstract function validateAccessToken(string $accessToken);
+
+    public function curl($url, $params ='', $return = 1, $header = [], $cookie = [], $option = [])
+    {
+        $ch = curl_init($url); //初始化curl并设置链接
+        //curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8);
+        //设置是否为post传递
+        curl_setopt($ch, CURLOPT_POST, (bool)$params);
+        //对于https 设定为不验证证书和host
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, $return);//设置是否返回信息
+
+        if($cookie)
+        {
+            $key = array_keys($cookie);
+            curl_setopt($ch, $key[0]=='jar' ? CURLOPT_COOKIEJAR : CURLOPT_COOKIEFILE, $cookie['file']);
+        }
+
+        if($params)
+        {
+            if(is_array($params))
+            {
+                $params = http_build_query($params);
+            }
+            //POST 数据
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        }
+
+        if($header)
+        {
+            foreach($header as $k => $v)
+            {
+                $newheader[] = is_numeric($k) ? $v : "$k: $v";
+            }
+
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $newheader); //设置头信息的地方
+        }
+        else
+        {
+            curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']??'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36 Lamson');
+        }
+
+        foreach($option as $key => $val)
+        {
+            curl_setopt($ch, $key, $val);
+        }
+
+        $response = curl_exec($ch);//执行并接收返回信息
+
+        if(curl_errno($ch))
+        {
+            //出错则抛出异常
+            throw new OAuthException(curl_error($ch), curl_errno($ch));
+        }
+
+        if(! empty($option[CURLOPT_HEADER]))
+        {
+            // 获得响应结果里的：头大小
+            $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+            // 根据头大小去获取头信息内容
+            $_EVN['CURL_HEADER'] = substr($response, 0, $header_size);
+            $response = substr($response, $header_size);
+        }
+
+        curl_close($ch); //关闭curl链接
+        return $response;
+    }
 }

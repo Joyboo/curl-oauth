@@ -4,16 +4,16 @@
  */
 
 
-class QQ extends \EasySwoole\Http\AbstractInterface\Controller
+class QQ
 {
     public function index()
     {
-        $config = new \EasySwoole\OAuth\QQ\Config();
+        $config = new \OAuth\QQ\Config();
         $config->setAppId('appid');
         $config->setState('easyswoole');
         $config->setRedirectUri('redirect_uri');
 
-        $oauth = new \EasySwoole\OAuth\QQ\OAuth($config);
+        $oauth = new \OAuth\QQ\OAuth($config);
         $url = $oauth->getAuthUrl();
 
         return $this->response()->redirect($url);
@@ -23,12 +23,12 @@ class QQ extends \EasySwoole\Http\AbstractInterface\Controller
     {
         $params = $this->request()->getQueryParams();
 
-        $config = new \EasySwoole\OAuth\QQ\Config();
+        $config = new \OAuth\QQ\Config();
         $config->setAppId('appid');
         $config->setAppKey('appkey');
         $config->setRedirectUri('redirect_uri');
 
-        $oauth = new \EasySwoole\OAuth\QQ\OAuth($config);
+        $oauth = new \OAuth\QQ\OAuth($config);
         $accessToken = $oauth->getAccessToken('easyswoole', $params['state'], $params['code']);
         $refreshToken = $oauth->getAccessTokenResult()['refresh_token'];
 

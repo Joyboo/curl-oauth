@@ -4,7 +4,7 @@
  */
 
 
-namespace EasySwoole\OAuth;
+namespace OAuth;
 
 
 abstract class BaseConfig

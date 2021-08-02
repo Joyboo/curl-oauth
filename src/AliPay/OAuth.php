@@ -4,13 +4,10 @@
  */
 
 
-namespace EasySwoole\OAuth\AliPay;
+namespace OAuth\AliPay;
 
-
-use EasySwoole\HttpClient\HttpClient;
-use EasySwoole\OAuth\BaseOAuth;
-use EasySwoole\OAuth\OAuthException;
-use Swoole\Coroutine\System;
+use OAuth\BaseOAuth;
+use OAuth\OAuthException;
 
 class OAuth extends BaseOAuth
 {
@@ -120,7 +117,8 @@ class OAuth extends BaseOAuth
         }
 
         if ($this->config->getAppPrivateKeyFile()) {
-            $privateKey = System::readFile($this->config->getAppPrivateKeyFile());
+//            $privateKey = System::readFile($this->config->getAppPrivateKeyFile());
+            $privateKey = file_get_contents($this->config->getAppPrivateKeyFile());
         } else if ($this->config->getAppPrivateKey()) {
             $privateKey = $this->config->getAppPrivateKey();
         } else {

@@ -4,10 +4,10 @@
  */
 
 
-namespace EasySwoole\OAuth\QQ;
+namespace OAuth\QQ;
 
 
-use EasySwoole\OAuth\BaseConfig;
+use OAuth\BaseConfig;
 
 class Config extends BaseConfig
 {

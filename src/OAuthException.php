@@ -3,7 +3,7 @@
  * @author gaobinzhan <gaobinzhan@gmail.com>
  */
 
-namespace EasySwoole\OAuth;
+namespace OAuth;
 
 class OAuthException extends \Exception
 {

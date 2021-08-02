@@ -1,22 +1,16 @@
 {
-  "name": "easyswoole/o-auth",
+  "name": "Joyboo/o-auth",
   "type": "library",
-  "description": "easyswoole component",
+  "description": "curl oauth component",
   "keywords" : ["swoole", "framework", "async","easyswoole"],
   "homepage" : "https://www.easyswoole.com/",
   "license" : "Apache-2.0",
   "require": {
-    "php": ">=7.1.0",
-    "ext-swoole":"^4.4.0",
-    "easyswoole/http-client": "^1.2"
-  },
-  "require-dev": {
-    "easyswoole/swoole-ide-helper": "^1.2",
-    "easyswoole/phpunit":">=1.0.0"
+    "php": ">=7.1.0"
   },
   "autoload": {
     "psr-4": {
-      "EasySwoole\\OAuth\\": "src/"
+      "\\OAuth\\": "src/"
     }
   }
 }

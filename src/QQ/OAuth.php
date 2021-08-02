@@ -4,12 +4,10 @@
  */
 
 
-namespace EasySwoole\OAuth\QQ;
+namespace OAuth\QQ;
 
-
-use EasySwoole\HttpClient\HttpClient;
-use EasySwoole\OAuth\BaseOAuth;
-use EasySwoole\OAuth\OAuthException;
+use OAuth\BaseOAuth;
+use OAuth\OAuthException;
 
 class OAuth extends BaseOAuth
 {

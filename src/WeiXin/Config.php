@@ -4,10 +4,10 @@
  */
 
 
-namespace EasySwoole\OAuth\WeiXin;
+namespace OAuth\WeiXin;
 
 
-use EasySwoole\OAuth\BaseConfig;
+use OAuth\BaseConfig;
 
 class Config extends BaseConfig
 {

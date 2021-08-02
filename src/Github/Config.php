@@ -4,10 +4,10 @@
  */
 
 
-namespace EasySwoole\OAuth\Github;
+namespace OAuth\Github;
 
 
-use EasySwoole\OAuth\BaseConfig;
+use OAuth\BaseConfig;
 
 class Config extends BaseConfig
 {
