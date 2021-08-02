@@ -1,8 +1,8 @@
 {
-  "name": "Joyboo/o-auth",
+  "name": "joyboo/o-auth",
   "type": "library",
   "description": "curl oauth component",
-  "keywords" : ["swoole", "framework", "async","easyswoole"],
+  "keywords" : ["framework", "async"],
   "homepage" : "https://www.easyswoole.com/",
   "license" : "Apache-2.0",
   "require": {
