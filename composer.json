@@ -1,9 +1,7 @@
 {
-  "name": "joyboo/joyoauth",
+  "name": "joyboo/curl-oauth",
   "type": "library",
   "description": "curl oauth component",
-  "keywords" : ["framework", "async"],
-  "homepage" : "https://www.easyswoole.com/",
   "license" : "Apache-2.0",
   "require": {
     "php": ">=7.1.0"

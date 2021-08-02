@@ -7,7 +7,7 @@
 ## 安装
 
 ```
-composer require Joyboo/o-auth
+composer require joyboo/curl-oauth
 ```
 
 ## 代码
