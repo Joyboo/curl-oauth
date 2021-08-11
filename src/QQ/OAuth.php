@@ -157,4 +157,8 @@ class OAuth extends BaseOAuth
         $this->openId = $openId;
     }
 
+    public function selfOpenId()
+    {
+        return $this->openId;
+    }
 }

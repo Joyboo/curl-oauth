@@ -13,7 +13,17 @@ abstract class BaseOAuth
 
     protected $refreshTokenResult = [];
 
-    public function __construct(BaseConfig $config)
+    public function __construct($config = null)
+    {
+        if ($config && $config instanceof BaseConfig) {
+            $this->setConfig($config);
+        }
+    }
+
+    /**
+     * @param BaseConfig $config
+     */
+    public function setConfig(BaseConfig $config)
     {
         $this->config = $config;
     }
